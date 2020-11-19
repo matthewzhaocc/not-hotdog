@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "not-hotdog"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1q2ftwvjigqov"
+s3_prefix = "not-hotdog"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
