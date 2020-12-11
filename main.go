@@ -7,13 +7,25 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
+	"text/template"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/rekognition"
 )
 
+var templates = template.Must(template.ParseFiles("index.html"))
+
+func display(w http.ResponseWriter, page string, data interface{}) {
+	templates.ExecuteTemplate(w, "index.html", data)
+}
+
 func IsItHotDog(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		display(w, "index", nil)
+		return
+	}
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("image.jpg")
 	if err != nil {
@@ -48,7 +60,15 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 	if errdetect != nil {
 		fmt.Fprintf(w, "something happened")
 	}
-	fmt.Fprintf(w, *res.Labels[0].Name)
+	resstr := ""
+	for i := 0; i < len(res.Labels); i++ {
+		resstr += *res.Labels[i].Name
+	}
+	if strings.Contains(resstr, "Hot Dog") {
+		fmt.Fprintf(w, "IT IS HOTDOG")
+	} else {
+		fmt.Fprintf(w, "IT IS NOT HOTDOG")
+	}
 }
 
 func main() {
