@@ -27,7 +27,7 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	r.ParseMultipartForm(10 << 20)
-	file, handler, err := r.FormFile("image.jpg")
+	file, _, err := r.FormFile("image.jpg")
 	if err != nil {
 		fmt.Fprintf(w, "Error Retriving image.jpg")
 		return
@@ -35,7 +35,7 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 
 	defer file.Close()
 
-	dst, err := os.Create(handler.Filename)
+	dst, err := os.Create("image.jpg")
 	defer dst.Close()
 	if err != nil {
 		fmt.Fprintf(w, "internal error occured")
