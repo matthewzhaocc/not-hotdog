@@ -48,9 +48,12 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 	f, _ := os.Open("image.jpg")
 	reader := bufio.NewReader(f)
 	content, _ := ioutil.ReadAll(reader)
+	defer f.Close()
+	
 	sess := session.New(&aws.Config{
 		Region: aws.String("us-west-2"),
 	})
+	
 	svc := rekognition.New(sess)
 	res, errdetect := svc.DetectLabels(&rekognition.DetectLabelsInput{
 		Image: &rekognition.Image{
@@ -60,11 +63,12 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 	if errdetect != nil {
 		fmt.Fprintf(w, "something happened")
 	}
-	resstr := ""
+	var b strings.Builder
+	b.Grow(1024)
 	for i := 0; i < len(res.Labels); i++ {
-		resstr += *res.Labels[i].Name
+		fmt.Fprintf(&b, *res.Labels[i].Name)
 	}
-	if strings.Contains(resstr, "Hot Dog") {
+	if strings.Contains(b.String(), "Hot Dog") {
 		fmt.Fprintf(w, "IT IS HOTDOG")
 	} else {
 		fmt.Fprintf(w, "IT IS NOT HOTDOG")
