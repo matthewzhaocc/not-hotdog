@@ -49,11 +49,11 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 	reader := bufio.NewReader(f)
 	content, _ := ioutil.ReadAll(reader)
 	defer f.Close()
-	
+
 	sess := session.New(&aws.Config{
 		Region: aws.String("us-west-2"),
 	})
-	
+
 	svc := rekognition.New(sess)
 	res, errdetect := svc.DetectLabels(&rekognition.DetectLabelsInput{
 		Image: &rekognition.Image{
