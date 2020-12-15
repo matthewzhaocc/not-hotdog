@@ -30,6 +30,26 @@ func TestImageRecognizer(t *testing.T) {
 	}
 }
 
+func TestNotHotDog(t *testing.T) {
+	b, w := GenerateMultipartFormData(t, "./testfiles/nothotdog.jpg")
+	req, err := http.NewRequest("POST", "/", &b)
+	req.Header.Set("Content-Type", w.FormDataContentType())
+	if err != nil {
+		return
+	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(IsItHotDog)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("Handler returned a %v , expecting a http 200", status)
+	}
+
+	expected := "IT IS NOT HOTDOG"
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+	}
+}
+
 func GenerateMultipartFormData(t *testing.T, fileName string) (bytes.Buffer, *multipart.Writer) {
 	var b bytes.Buffer
 	var err error
