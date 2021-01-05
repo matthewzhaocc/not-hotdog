@@ -77,7 +77,7 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 	if errdetect != nil {
-		fmt.Fprintf(w, "something happened")
+		fmt.Fprintf(w, errdetect.Error())
 	}
 	// make the result a big string for later parsing
 	var b strings.Builder
