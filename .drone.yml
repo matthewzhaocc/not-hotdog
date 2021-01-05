@@ -16,7 +16,7 @@ steps:
   # run tests for not hotdog
   - name:
     image: golang
-    command:
+    commands:
       - go build
       - go test
     environment:
@@ -25,13 +25,14 @@ steps:
       AWS_SECRET_ACCESS_KEY:
         from: access_key_test
   # build production container
-#  - name: publish
-#    image: plugins/ecr
-#    settings:
-#      access_key:
-#        from: access_key_push
-#      secret_key:
-#        from: secret_key_push
-#      repo: nothotdog
-#      registry: 661723793673.dkr.ecr.us-west-2.amazonaws.com
-#      region: us-west-2
+  - name: publish
+    image: plugins/ecr
+    settings:
+      access_key:
+        from: access_key_push
+      secret_key:
+        from: secret_key_push
+      repo: nothotdog
+      registry: 661723793673.dkr.ecr.us-west-2.amazonaws.com
+      region: us-west-2
+      
