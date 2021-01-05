@@ -1,3 +1,4 @@
+// tests the http portions of the app
 package main
 
 import (
@@ -10,7 +11,7 @@ import (
 	"testing"
 )
 
-
+// tests the app for recognizing a hotdog image, expect return IT IS HOTDOG
 func TestImageRecognizer(t *testing.T) {
 	b, w := GenerateMultipartFormData(t, "./testfiles/hotdog.jpg")
 	req, err := http.NewRequest("POST", "/", &b)
@@ -30,6 +31,7 @@ func TestImageRecognizer(t *testing.T) {
 	}
 }
 
+// tests the app for recognizing a not hotdog image, expect IT IS NOT HOTDOG
 func TestNotHotDog(t *testing.T) {
 	b, w := GenerateMultipartFormData(t, "./testfiles/nothotdog.jpg")
 	req, err := http.NewRequest("POST", "/", &b)
@@ -50,6 +52,7 @@ func TestNotHotDog(t *testing.T) {
 	}
 }
 
+// helper function to generate a multipart form data payload
 func GenerateMultipartFormData(t *testing.T, fileName string) (bytes.Buffer, *multipart.Writer) {
 	var b bytes.Buffer
 	var err error
@@ -66,6 +69,7 @@ func GenerateMultipartFormData(t *testing.T, fileName string) (bytes.Buffer, *mu
 	return b, w
 }
 
+// opens the file and returns the file pointer
 func mustOpen(f string) *os.File {
 	r, err := os.Open(f)
 	if err != nil {
@@ -74,6 +78,7 @@ func mustOpen(f string) *os.File {
 	return r
 }
 
+// test the HTML serving ability of the application, only testing for return code
 func TestHTMLServing(t *testing.T) {
 	req, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
