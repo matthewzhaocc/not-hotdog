@@ -17,7 +17,7 @@ spec:
         app: hotdog
     spec:
       containers:
-        - image: public.ecr.aws/m6h8t0n2/not-hotdog:1d351afad7c224d79ca8b0ab04c64c01fc76d598
+        - image: public.ecr.aws/m6h8t0n2/not-hotdog:9e8a51a15e12632399201d4d185251a8ef900e46
           name: not-hotdog
           imagePullPolicy: Always
           resources:

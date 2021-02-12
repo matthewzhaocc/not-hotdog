@@ -15,6 +15,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/rekognition"
+
+	log "github.com/sirupsen/logrus"
 )
 
 //import the index.html template
@@ -35,6 +37,7 @@ func display(w http.ResponseWriter, page string, data interface{}) {
 // POST request returns wether the uploaded image is a hot dog
 // require AWS credentials that have All Access to AWS Rekognition
 func IsItHotDog(w http.ResponseWriter, r *http.Request) {
+	log.Info("Received a Request for Image rekognition")
 	// Handles the GET request
 	if r.Method == "GET" {
 		display(w, "index", nil)
@@ -94,6 +97,7 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 }
 // Health std healthchecker
 func Health(w http.ResponseWriter, r *http.Request) {
+	log.Info("Healthy!")
 	fmt.Fprintf(w, "Healthy!")
 }
 
@@ -101,5 +105,6 @@ func Health(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", IsItHotDog)
 	http.HandleFunc("/health", Health)
+	log.Info("Started listening on :6443")
 	http.ListenAndServe(":6443", nil)
 }
