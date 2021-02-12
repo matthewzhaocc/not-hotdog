@@ -14,4 +14,4 @@ phases:
     commands:
       - echo pushing docker image
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/$IMAGE_REPO_NAME:CODEBUILD_RESOLVED_SOURCE_VERSION
-      - aws ssm put-parameter --name not-hotdog-latest-image-id --value CODEBUILD_RESOLVED_SOURCE_VERSION --type String --region us-west-2
+      - aws ssm put-parameter --name not-hotdog-latest-image-id --value $CODEBUILD_RESOLVED_SOURCE_VERSION --type String --region us-west-2 --overwrite true
