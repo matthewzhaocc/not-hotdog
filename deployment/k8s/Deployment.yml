@@ -17,9 +17,16 @@ spec:
         app: hotdog
     spec:
       containers:
-        - image: public.ecr.aws/m6h8t0n2/not-hotdog:e639ff4303c6921b9d04bddc02e69b658ff44abb
+        - image: public.ecr.aws/m6h8t0n2/not-hotdog:1d351afad7c224d79ca8b0ab04c64c01fc76d598
           name: not-hotdog
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 250m
+            limits:
+              memory: 1024Mi
+              cpu: 2000m 
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
