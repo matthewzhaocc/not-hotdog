@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+    - apt update -y
+    - apt install golang -y
+  build:
+    commands:
+    - echo running unit testing
+    - go test .
