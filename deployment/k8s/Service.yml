@@ -4,8 +4,9 @@ metadata:
   name: nothotdog-svc
 spec:
   selector:
-    app: not-hotdog
+    app: hotdog
   ports:
     - protocol: TCP
       port: 6443
+      targetPort: 6443
   type: ClusterIP

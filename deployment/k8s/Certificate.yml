@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: nothotdog-cert
+  namespace: istio-system
+spec:
+  secretName: nothotdog-cert
+  commonName: not-hotdog.matthew-cloud.com
+  dnsNames:
+    - not-hotdog.matthew-cloud.com
+  issuerRef:
+    name: cf-prod
+    kind: ClusterIssuer
+    group: cert-manager.io

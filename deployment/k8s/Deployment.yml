@@ -3,6 +3,11 @@ kind: Deployment
 metadata:
   name: not-hotdog
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: hotdog
@@ -12,7 +17,7 @@ spec:
         app: hotdog
     spec:
       containers:
-        - image: <IMAGE_NAME_REPLACE_ME_NOT_HOTDOG>
+        - image: public.ecr.aws/m6h8t0n2/not-hotdog:e639ff4303c6921b9d04bddc02e69b658ff44abb
           name: not-hotdog
           imagePullPolicy: Always
           env:
@@ -26,19 +31,14 @@ spec:
                 secretKeyRef:
                   name: aws-credentials-not-hotdog
                   key: AWS_SECRET_ACCESS_KEY
-          initialDelaySeconds: 5
-          periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
               port: 6443
-              periodSeconds: 5
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /health
               port: 6443
-              periodSeconds: 5
-          strategy:
-            type: RollingUpdate
-            maxSurge: 2
-            maxUnavailable: 0
+            periodSeconds: 5
+          
