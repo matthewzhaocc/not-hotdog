@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nothotdog-vsvc
+spec:
+  gateways:
+    - nothotdog-ingress
+    hosts:
+    - not-hotdog.matthew-cloud.com
+    http:
+      - name: not-hotdog
+        route:
+          - destination:
+              hosts: nothotdog-svc
+              port: 6443
+            weight: 100

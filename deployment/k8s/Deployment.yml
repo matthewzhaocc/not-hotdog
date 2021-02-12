@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-hotdog
+spec:
+  selector:
+    matchLabels:
+      app: hotdog
+  template:
+    metadata:
+      labels:
+        app: hotdog
+    spec:
+      containers:
+        - image: <IMAGE_NAME_REPLACE_ME_NOT_HOTDOG>
+          name: not-hotdog
+          imagePullPolicy: Always
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials-not-hotdog
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials-not-hotdog
+                  key: AWS_SECRET_ACCESS_KEY
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 6443
+              periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 6443
+              periodSeconds: 5
+          strategy:
+            type: RollingUpdate
+            maxSurge: 2
+            maxUnavailable: 0

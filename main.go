@@ -25,7 +25,7 @@ func display(w http.ResponseWriter, page string, data interface{}) {
 	templates.ExecuteTemplate(w, "index.html", data)
 }
 
-// the main handler
+// IsItHotDog the main handler
 // accepts GET and POST request
 // GET request does not require any kind of query param
 // GET request returns the upload page
@@ -92,9 +92,14 @@ func IsItHotDog(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "IT IS NOT HOTDOG")
 	}
 }
+// Health std healthchecker
+func Health(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Healthy!")
+}
 
 // launches the app on port 6443
 func main() {
 	http.HandleFunc("/", IsItHotDog)
+	http.HandleFunc("/health", Health)
 	http.ListenAndServe(":6443", nil)
 }

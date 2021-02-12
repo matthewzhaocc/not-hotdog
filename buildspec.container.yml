@@ -4,14 +4,14 @@ phases:
   pre_build:
     commands:
     - echo logging into ECR
-    - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com
+    - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/m6h8t0n2
   build:
     commands:
     - echo build started
     - docker build -t $IMAGE_REPO_NAME .
-    - docker tag $IMAGE_REPO_NAME $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+    - docker tag $IMAGE_REPO_NAME public.ecr.aws/m6h8t0n2/not-hotdog:$CODEBUILD_RESOLVED_SOURCE_VERSION
   post_build:
     commands:
       - echo pushing docker image
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push public.ecr.aws/m6h8t0n2/not-hotdog:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - aws ssm put-parameter --name not-hotdog-latest-image-id --value $CODEBUILD_RESOLVED_SOURCE_VERSION --type String --region us-west-2 --overwrite
